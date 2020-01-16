@@ -55,6 +55,7 @@ public partial class CameraMMO : MonoBehaviour
     private bool camDrag;				// (Mobile Controls)
     private bool rotationInitialized;
 
+    private float posx, posy, posz = 0f; //  little fix zoom for mobile control
     // -----------------------------------------------------------------------------------
     // target
     // -----------------------------------------------------------------------------------
@@ -131,9 +132,16 @@ public partial class CameraMMO : MonoBehaviour
             rotOld = rotation;
 
             // zoom
-            float speed = Input.mousePresent ? zoomSpeedMouse : zoomSpeedTouch;
-            float step = Utils.GetZoomUniversal() * speed;
-            distance = Mathf.Clamp(distance - step, minDistance, maxDistance);
+            Vector3 CheckMove = transform.localPosition;
+            if ((CheckMove.x.ToString() == posx.ToString()) && (CheckMove.y.ToString() == posy.ToString()) && (CheckMove.z.ToString() == posz.ToString()))
+            {
+                float speed = Input.mousePresent ? zoomSpeedMouse : zoomSpeedTouch;
+                float step = Utils.GetZoomUniversal() * speed;
+                distance = Mathf.Clamp(distance - step, minDistance, maxDistance);
+            }
+            posx = transform.localPosition.x;
+            posy = transform.localPosition.y;
+            posz = transform.localPosition.z;
         }
 
         // -- target auto follow
